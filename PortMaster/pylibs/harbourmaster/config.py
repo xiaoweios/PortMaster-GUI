@@ -29,6 +29,11 @@ HM_UPDATE_FREQUENCY=(60 * 60 * 1)  # Only check automatically once per hour.
 HM_TESTING=False
 HM_PERFTEST=False
 
+def manager_updates_allowed(env=None):
+    """XiaoweiOS owns manager updates through its OS package."""
+    values = os.environ if env is None else env
+    return values.get('XIAOWEIOS_PORTMASTER_OS_MANAGED', '0') != '1'
+
 ## Maximum temporary size is 100 mb, this can cause errors on TrimUI and muOS.
 HM_MAX_TEMP_SIZE = 1024 * 1024 * 100
 
@@ -324,5 +329,6 @@ __all__ = (
     'HM_TESTING',
     'HM_TOOLS_DIR',
     'HM_UPDATE_FREQUENCY',
+    'manager_updates_allowed',
     'HM_ACCEPTABLE_NON_BASH_TOP_LEVEL_FILES',
     )

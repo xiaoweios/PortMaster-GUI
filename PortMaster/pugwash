@@ -1873,6 +1873,10 @@ class PortMasterGUI(pySDL2gui.GUI, harbourmaster.Callback):
 
 
 def portmaster_check_update(pm, config, temp_dir):
+    if not harbourmaster.manager_updates_allowed():
+        logger.info("PortMaster manager updates are owned by the XiaoweiOS OS package.")
+        return False
+
     cfg_dir = harbourmaster.HM_TOOLS_DIR / "PortMaster"
 
     cfg_file = cfg_dir / "config" / "config.json"

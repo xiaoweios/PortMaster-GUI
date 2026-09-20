@@ -29,6 +29,7 @@ SPECIAL_GAMELIST_CODE = object()
 
 class PlatformBase():
     WANT_XBOX_FIX = False
+    MANAGER_UPDATES = True
     WANT_SWAP_BUTTONS = False
 
     MOVE_PM_BASH = False
@@ -1308,6 +1309,12 @@ class PlatformSpruce(PlatformBase):
         self.portmaster_install([])
 
 
+class PlatformXiaoweiOS(PlatformBase):
+    """XiaoweiOS keeps upstream port behavior but OS-manages this manager."""
+    MANAGER_UPDATES = False
+    ES_NAME = "ports"
+
+
 class PlatformTesting(PlatformBase):
     WANT_XBOX_FIX = False
     WANT_SWAP_BUTTONS = False
@@ -1332,6 +1339,7 @@ HM_PLATFORMS = {
     'trimui':    PlatformTrimUI,
     'spruce':    PlatformSpruce,
     'retrodeck': PlatformRetroDECK,
+    'xiaoweios': PlatformXiaoweiOS,
     'darwin':    PlatformTesting,
     'default':   PlatformBase,
     # 'default': PlatformAmberELEC,
@@ -1340,6 +1348,7 @@ HM_PLATFORMS = {
 
 __all__ = (
     'PlatformBase',
+    'PlatformXiaoweiOS',
     'HM_PLATFORMS',
     )
 

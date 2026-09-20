@@ -17,6 +17,7 @@ from .config import (
     HM_TESTING,
     HM_TOOLS_DIR,
     HM_UPDATE_FREQUENCY,
+    manager_updates_allowed,
     )
 
 from .util import (
@@ -71,6 +72,7 @@ from .hardware import (
 
 from .platform import (
     PlatformBase,
+    PlatformXiaoweiOS,
     HM_PLATFORMS,
     )
 

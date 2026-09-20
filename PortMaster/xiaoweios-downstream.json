@@ -1,0 +1,7 @@
+{
+  "schema": "xiaoweios.portmaster-downstream",
+  "upstream_repository": "PortsMaster/PortMaster-GUI",
+  "upstream_baseline": "3eb046956481a464b45c556c7c5d4438975d4226",
+  "manager_update_owner": "xiaoweios-os-package",
+  "port_runtime_lifecycle_owner": "portmaster-upstream"
+}

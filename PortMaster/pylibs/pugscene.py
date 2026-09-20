@@ -809,29 +809,30 @@ class OptionScene(BaseScene):
             _("Update Ports"),
             description=_("Fetch latest ports information."))
 
-        self.tags['option_list'].add_option(
-            'update-portmaster',
-            _("Update PortMaster"),
-            description=_("Force check for a new PortMaster version."))
-
-        if self.gui.hm.device['name'] not in ('muOS', 'TrimUI'):
+        if self.gui.hm.platform.MANAGER_UPDATES and harbourmaster.manager_updates_allowed():
             self.tags['option_list'].add_option(
-                'restore-portmaster',
-                _("Restore PortMaster"),
-                description=_("This will restore PortMaster to the latest stable version of PortMaster."))
+                'update-portmaster',
+                _("Update PortMaster"),
+                description=_("Force check for a new PortMaster version."))
 
-        self.tags['option_list'].add_option(
-            'release-channel',
-            _("Release Channel: {channel}").format(
-                channel=self.gui.hm.cfg_data.get('release_channel', "stable")),
-            description=_("Change release channel of PortMaster, either beta or stable."))
-
-        if self.gui.hm.cfg_data.get('konami', False):
-            if self.gui.hm.cfg_data.get('release_channel', 'stable') != 'alpha':
+            if self.gui.hm.device['name'] not in ('muOS', 'TrimUI'):
                 self.tags['option_list'].add_option(
-                    'release-alpha',
-                    _("Enable Alpha Releases"),
-                    description=_("Change release channel of PortMaster to alpha."))
+                    'restore-portmaster',
+                    _("Restore PortMaster"),
+                    description=_("This will restore PortMaster to the latest stable version of PortMaster."))
+
+            self.tags['option_list'].add_option(
+                'release-channel',
+                _("Release Channel: {channel}").format(
+                    channel=self.gui.hm.cfg_data.get('release_channel', "stable")),
+                description=_("Change release channel of PortMaster, either beta or stable."))
+
+            if self.gui.hm.cfg_data.get('konami', False):
+                if self.gui.hm.cfg_data.get('release_channel', 'stable') != 'alpha':
+                    self.tags['option_list'].add_option(
+                        'release-alpha',
+                        _("Enable Alpha Releases"),
+                        description=_("Change release channel of PortMaster to alpha."))
 
         if len(self.gui.hm.get_gcd_modes()) > 0:
             gcd_mode = self.gui.hm.get_gcd_mode()

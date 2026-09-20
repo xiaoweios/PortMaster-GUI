@@ -32,6 +32,13 @@ from .platform import *
 from .captain import *
 
 ################################################################################
+def register_source(sources, prefix, source, source_file):
+    """Register one source without allowing order-based prefix takeover."""
+    if prefix in sources:
+        raise ValueError(f"Duplicate source prefix {prefix!r}: {source_file}")
+    sources[prefix] = source
+
+
 ## Config loading
 class HarbourMaster():
     __PORTS_INFO = None
@@ -536,9 +543,9 @@ class HarbourMaster():
                 source_data['last_checked'] = None
                 source_data['data'] = {}
 
+            source_prefix = source_data['prefix']
             source = HM_SOURCE_APIS[source_data['api']](self, source_file, source_data)
-
-            self.sources[source_data['prefix']] = source
+            register_source(self.sources, source_prefix, source, source_file)
 
 
     def _get_pm_signature(self, file_name):
@@ -1753,9 +1760,14 @@ class HarbourMaster():
         return 0
 
     def _install_portmaster(self, download_file, do_delete=False):
-        """
-        Installs a new version of PortMaster
-        """
+        """Install a manager archive only where the platform owns self-update."""
+        if not self.platform.MANAGER_UPDATES or not manager_updates_allowed():
+            logger.error("PortMaster manager updates are owned by the XiaoweiOS OS package.")
+            self.callback.message_box(_("PortMaster is updated by the operating system."))
+            if do_delete and download_file.is_file():
+                download_file.unlink()
+            return 255
+
         logger.info("Installing PortMaster.zip")
         # if HM_TESTING:
         #     logger.error("Unable to install PortMaster.zip in testing environment.")
