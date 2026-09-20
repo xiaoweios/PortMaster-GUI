@@ -18,6 +18,7 @@ from .config import (
     HM_TOOLS_DIR,
     HM_UPDATE_FREQUENCY,
     manager_updates_allowed,
+    source_defaults,
     )
 
 from .util import (

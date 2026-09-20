@@ -12,6 +12,7 @@ import subprocess
 import textwrap
 
 from pathlib import Path
+from urllib.parse import urlparse
 
 # Included imports
 
@@ -279,6 +280,23 @@ HM_SOURCE_DEFAULTS = {
     }
 
 
+def source_defaults(env=None):
+    """Return upstream sources plus an explicitly configured XiaoweiOS source."""
+    values = os.environ if env is None else env
+    defaults = dict(HM_SOURCE_DEFAULTS)
+    source_url = values.get('XIAOWEIOS_PORTS_SOURCE_URL', '')
+    if not source_url:
+        return defaults
+    parsed = urlparse(source_url)
+    if parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password:
+        raise ValueError('XIAOWEIOS_PORTS_SOURCE_URL must be credential-free HTTPS')
+    defaults['030_xiaoweios.source.json'] = json.dumps({
+        'prefix': 'xw', 'api': 'PortMasterV3', 'name': 'XiaoweiOS',
+        'url': source_url, 'last_checked': None, 'version': 1, 'data': {},
+        }, indent=4)
+    return defaults
+
+
 HM_GENRES = [
     "action",
     "adventure",
@@ -332,5 +350,6 @@ __all__ = (
     'HM_TOOLS_DIR',
     'HM_UPDATE_FREQUENCY',
     'manager_updates_allowed',
+    'source_defaults',
     'HM_ACCEPTABLE_NON_BASH_TOP_LEVEL_FILES',
     )

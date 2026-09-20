@@ -144,9 +144,10 @@ class HarbourMaster():
             if self.cfg_data.get('first-run', True) or not self.cfg_dir.is_dir():
                 self.cfg_dir.mkdir(0o755, parents=True, exist_ok=True)
 
-                for source_name in HM_SOURCE_DEFAULTS:
+                defaults = source_defaults()
+                for source_name in defaults:
                     with (self.cfg_dir / source_name).open('w') as fh:
-                        fh.write(HM_SOURCE_DEFAULTS[source_name])
+                        fh.write(defaults[source_name])
 
             if self.cfg_data.get('first-run', True):
                 self.platform.first_run()
@@ -196,9 +197,10 @@ class HarbourMaster():
                 logger.debug(f"unlink {source_file}")
                 source_file.unlink()
 
-            for source_name in HM_SOURCE_DEFAULTS:
+            defaults = source_defaults()
+            for source_name in defaults:
                 with (self.cfg_dir / source_name).open('w') as fh:
-                    fh.write(HM_SOURCE_DEFAULTS[source_name])
+                    fh.write(defaults[source_name])
 
                 logger.debug(f"creating {source_name}")
 
