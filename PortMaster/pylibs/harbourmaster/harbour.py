@@ -32,6 +32,16 @@ from .platform import *
 from .captain import *
 
 ################################################################################
+def sync_xiaoweios_source(cfg_dir, defaults):
+    """Synchronize the one OS-owned source without touching user sources."""
+    source_name = '030_xiaoweios.source.json'
+    target = Path(cfg_dir) / source_name
+    if source_name in defaults:
+        target.write_text(defaults[source_name])
+    elif target.is_file():
+        target.unlink()
+
+
 def register_source(sources, prefix, source, source_file):
     """Register one source without allowing order-based prefix takeover."""
     if prefix in sources:
@@ -167,6 +177,7 @@ class HarbourMaster():
                 self.update_config()
                 self.cfg_data['version'] = self.CONFIG_VERSION
 
+            sync_xiaoweios_source(self.cfg_dir, source_defaults())
             self.load_info()
 
             self.load_sources()
