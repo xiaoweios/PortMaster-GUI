@@ -544,6 +544,8 @@ class HarbourMaster():
                 source_data['data'] = {}
 
             source_prefix = source_data['prefix']
+            if source_prefix in self.sources:
+                raise ValueError(f"Duplicate source prefix {source_prefix!r}: {source_file}")
             source = HM_SOURCE_APIS[source_data['api']](self, source_file, source_data)
             register_source(self.sources, source_prefix, source, source_file)
 
