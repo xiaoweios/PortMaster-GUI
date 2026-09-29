@@ -30,6 +30,7 @@ from .info import *
 from .source import *
 from .platform import *
 from .captain import *
+from .xiaoweios_localization import load_overlay, localize_port_info
 
 ################################################################################
 def sync_xiaoweios_source(cfg_dir, defaults):
@@ -178,6 +179,7 @@ class HarbourMaster():
                 self.cfg_data['version'] = self.CONFIG_VERSION
 
             sync_xiaoweios_source(self.cfg_dir, source_defaults())
+            self.xiaoweios_localization = load_overlay()
             self.load_info()
 
             self.load_sources()
@@ -1615,6 +1617,8 @@ class HarbourMaster():
         if 'source' in result:
             result['source']['downloads'] = self.port_downloads(port_name)
 
+        if os.environ.get('XIAOWEIOS_PORTMASTER_OS_MANAGED') == '1':
+            result = localize_port_info(port_name, result, self.xiaoweios_localization)
         self.__PORT_INFO_CACHE[port_key] = result
         return result
 
