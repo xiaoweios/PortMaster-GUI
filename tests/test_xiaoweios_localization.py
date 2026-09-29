@@ -3,7 +3,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT/"PortMaster"),str(ROOT/"PortMaster"/"pylibs"),str(ROOT/"PortMaster"/"exlibs")]
 from harbourmaster.xiaoweios_localization import load_overlay,localize_port_info,validate_overlay
 def overlay():
- return {"schema":"xiaoweios.ports.localization.v1","locale":"zh_CN","upstream":{"url":"official","sha256":"a"*64},"entries":{"portmaster:demo.zip":{"source_title":"Demo","title":"演示","description":"中文描述","instructions":"","review":"machine-assisted","provenance":{"method":"agent-assisted","reference":"test"}}}}
+ return {"schema":"xiaoweios.ports.localization.v1","locale":"zh_CN","upstream":{"url":"https://github.com/PortsMaster/PortMaster-New/releases/latest/download/ports.json","sha256":"a"*64},"entries":{"portmaster:demo.zip":{"source_title":"Demo","title":"演示","description":"中文描述","instructions":"","review":"machine-assisted","provenance":{"method":"agent-assisted","reference":"test"}}}}
 def info():return {"name":"demo.zip","attr":{"title":"Demo","desc":"English","inst":"Supply data"},"source":{"url":"https://example.invalid/demo.zip","md5":"a"*32}}
 class TestXiaoweiOSLocalization(unittest.TestCase):
  def test_localizes_only_presentation_and_keeps_source_metadata(self):

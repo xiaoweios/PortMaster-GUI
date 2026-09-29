@@ -20,6 +20,11 @@ def validate_overlay(value):
         raise ValueError('invalid XiaoweiOS localization fields')
     if value['schema'] != SCHEMA or value['locale'] != LOCALE or not isinstance(value['entries'], dict):
         raise ValueError('invalid XiaoweiOS localization identity')
+    upstream = value['upstream']
+    if (not isinstance(upstream, dict) or set(upstream) != {'url', 'sha256'}
+            or upstream['url'] != 'https://github.com/PortsMaster/PortMaster-New/releases/latest/download/ports.json'
+            or not re.fullmatch(r'[0-9a-f]{64}', upstream['sha256'])):
+        raise ValueError('invalid XiaoweiOS localization upstream identity')
     if len(value['entries']) > 8192:
         raise ValueError('XiaoweiOS localization exceeds entry limit')
     for entry_id, entry in value['entries'].items():

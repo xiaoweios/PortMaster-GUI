@@ -1617,7 +1617,10 @@ class HarbourMaster():
         if 'source' in result:
             result['source']['downloads'] = self.port_downloads(port_name)
 
-        if os.environ.get('XIAOWEIOS_PORTMASTER_OS_MANAGED') == '1':
+        official = self.sources.get('pm')
+        if (os.environ.get('XIAOWEIOS_PORTMASTER_OS_MANAGED') == '1'
+                and official is not None
+                and official.clean_name(port_name) in official.ports):
             result = localize_port_info(port_name, result, self.xiaoweios_localization)
         self.__PORT_INFO_CACHE[port_key] = result
         return result
